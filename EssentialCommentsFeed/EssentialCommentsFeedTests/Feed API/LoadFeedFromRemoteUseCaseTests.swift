@@ -24,13 +24,20 @@ class RemoteCommentsFeedLoader {
     private let baseURL: URL
     private let client: HTTPClient
     
+    enum Error: Swift.Error {
+        case invalidData
+    }
+    
     init(url: URL, client: HTTPClient) {
         self.baseURL = url
         self.client = client
     }
     
-    func load() {
-        client.get(from: baseURL, completion: {_ in })
+    func load(completion: @escaping (Swift.Error?) -> Void) {
+        client.get(from: baseURL) {
+            _ in
+            completion(Error.invalidData)
+        }
     }
 }
 
@@ -45,9 +52,23 @@ class LoadFeedFromRemoteUseCaseTests: XCTestCase {
         let expectedURL = makeAnyURL()
         let (sut, client) = makeSUT(url: expectedURL)
         
-        sut.load()
+        sut.load { _ in }
         
         XCTAssertEqual(client.requestedURL, expectedURL)
+    }
+    
+    func test_loadInvalidJSON_deliversInvalidDataError() {
+        let (sut, client) = makeSUT()
+        
+        var resultErrors = [NSError]()
+        sut.load { error in resultErrors.append(error! as NSError) }
+        client.complete(data: makeInvalidJSON())
+        
+        XCTAssertEqual(resultErrors, [RemoteCommentsFeedLoader.Error.invalidData as NSError])
+    }
+    
+    private func makeInvalidJSON() -> Data {
+        Data("invalid JSON".utf8)
     }
     
     // MARK: Helpers
@@ -73,12 +94,31 @@ class LoadFeedFromRemoteUseCaseTests: XCTestCase {
     
     // MARK: Testing entities
     private class HTTPClientMock: HTTPClient {
-        var requestedURL: URL?
+        var requestedURL: URL? {
+            messages.last?.url
+        }
+        
+        private typealias Result = HTTPClient.Result
+        private typealias CompletionHanlder = (Result) -> Void
+        private var messages = [(url: URL, completion: CompletionHanlder)]()
         
         // Extensions
         func get(from url: URL, completion: @escaping (HTTPClient.Result) -> Void) -> HTTPClientTask {
-            requestedURL = url
+            messages.append((url, completion))
             return HTTPClientTaskMock()
+        }
+        
+        func complete(data: Data = Data(), _ index: Int = 0) {
+            let result: Result = .success((data, makeResponse()))
+            messages[index].completion(result)
+        }
+        
+        private func makeResponse(withHTTPStatusCode statusCode: Int = 200) -> HTTPURLResponse {
+            HTTPURLResponse(url: makeAnyURL(), statusCode: statusCode, httpVersion: nil, headerFields: nil)!
+        }
+        
+        private func makeAnyURL() -> URL {
+            URL(string: "https://any-url.com")!
         }
     }
     
