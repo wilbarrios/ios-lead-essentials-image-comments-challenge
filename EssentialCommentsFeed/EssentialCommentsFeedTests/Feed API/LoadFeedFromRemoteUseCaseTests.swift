@@ -26,6 +26,7 @@ class RemoteCommentsFeedLoader {
     
     enum Error: Swift.Error {
         case invalidData
+        case connectivity
     }
     
     init(url: URL, client: HTTPClient) {
@@ -35,8 +36,13 @@ class RemoteCommentsFeedLoader {
     
     func load(completion: @escaping (Swift.Error?) -> Void) {
         client.get(from: baseURL) {
-            _ in
-            completion(Error.invalidData)
+            result in
+            switch result {
+            case .failure(let error as NSError) where error.domain == "offline":
+                completion(Error.connectivity)
+            default:
+                completion(Error.invalidData)
+            }
         }
     }
 }
@@ -65,6 +71,16 @@ class LoadFeedFromRemoteUseCaseTests: XCTestCase {
         client.complete(data: makeInvalidJSON())
         
         XCTAssertEqual(resultErrors, [RemoteCommentsFeedLoader.Error.invalidData as NSError])
+    }
+    
+    func test_offlineLoad_deliversConnectivityError() {
+        let (sut, client) = makeSUT()
+        
+        var resultErrors = [NSError]()
+        sut.load { error in resultErrors.append(error! as NSError) }
+        client.completeAsOffline()
+        
+        XCTAssertEqual(resultErrors, [RemoteCommentsFeedLoader.Error.connectivity as NSError])
     }
     
     private func makeInvalidJSON() -> Data {
@@ -111,6 +127,15 @@ class LoadFeedFromRemoteUseCaseTests: XCTestCase {
         func complete(data: Data = Data(), _ index: Int = 0) {
             let result: Result = .success((data, makeResponse()))
             messages[index].completion(result)
+        }
+        
+        func completeAsOffline(_ index: Int = 0) {
+            messages[index].completion(.failure(makeOfflineError()))
+        }
+        
+        // Helpers
+        private func makeOfflineError() -> NSError {
+            return NSError(domain: "offline", code: 0)
         }
         
         private func makeResponse(withHTTPStatusCode statusCode: Int = 200) -> HTTPURLResponse {
