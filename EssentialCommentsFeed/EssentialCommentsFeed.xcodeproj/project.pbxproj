@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		BFA30B482617B28200756660 /* EssentialCommentsFeed.h in Headers */ = {isa = PBXBuildFile; fileRef = BFA30B462617B28200756660 /* EssentialCommentsFeed.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BFA30B592617B3C200756660 /* EssentialCommentsFeedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA30B582617B3C200756660 /* EssentialCommentsFeedTests.swift */; };
 		BFA30B5B2617B3C200756660 /* EssentialCommentsFeed.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA30B432617B28200756660 /* EssentialCommentsFeed.framework */; };
+		BFA30B672617B4E400756660 /* LoadFeedFromRemoteUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA30B662617B4E400756660 /* LoadFeedFromRemoteUseCaseTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,8 +27,8 @@
 		BFA30B462617B28200756660 /* EssentialCommentsFeed.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EssentialCommentsFeed.h; sourceTree = "<group>"; };
 		BFA30B472617B28200756660 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BFA30B562617B3C200756660 /* EssentialCommentsFeedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EssentialCommentsFeedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		BFA30B582617B3C200756660 /* EssentialCommentsFeedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EssentialCommentsFeedTests.swift; sourceTree = "<group>"; };
 		BFA30B5A2617B3C200756660 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BFA30B662617B4E400756660 /* LoadFeedFromRemoteUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadFeedFromRemoteUseCaseTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,10 +80,18 @@
 		BFA30B572617B3C200756660 /* EssentialCommentsFeedTests */ = {
 			isa = PBXGroup;
 			children = (
-				BFA30B582617B3C200756660 /* EssentialCommentsFeedTests.swift */,
+				BFA30B652617B43D00756660 /* Feed API */,
 				BFA30B5A2617B3C200756660 /* Info.plist */,
 			);
 			path = EssentialCommentsFeedTests;
+			sourceTree = "<group>";
+		};
+		BFA30B652617B43D00756660 /* Feed API */ = {
+			isa = PBXGroup;
+			children = (
+				BFA30B662617B4E400756660 /* LoadFeedFromRemoteUseCaseTests.swift */,
+			);
+			path = "Feed API";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -150,6 +158,7 @@
 					};
 					BFA30B552617B3C200756660 = {
 						CreatedOnToolsVersion = 12.4;
+						LastSwiftMigration = 1240;
 					};
 				};
 			};
@@ -201,7 +210,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BFA30B592617B3C200756660 /* EssentialCommentsFeedTests.swift in Sources */,
+				BFA30B672617B4E400756660 /* LoadFeedFromRemoteUseCaseTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -386,6 +395,7 @@
 		BFA30B5E2617B3C200756660 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = EssentialCommentsFeedTests/Info.plist;
@@ -396,6 +406,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = wb.devs.EssentialCommentsFeedTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -403,6 +414,7 @@
 		BFA30B5F2617B3C200756660 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = EssentialCommentsFeedTests/Info.plist;
