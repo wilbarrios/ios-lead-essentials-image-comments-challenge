@@ -21,6 +21,8 @@ public protocol HTTPClient {
 
 class RemoteCommentsFeedLoader {
     
+    typealias Result = Swift.Result<[FeedImageComment], Swift.Error>
+    
     private let baseURL: URL
     private let client: HTTPClient
     
@@ -34,17 +36,81 @@ class RemoteCommentsFeedLoader {
         self.client = client
     }
     
-    func load(completion: @escaping (Swift.Error?) -> Void) {
+    func load(completion: @escaping (Result) -> Void) {
         client.get(from: baseURL) {
             result in
             switch result {
+            case .success((let data, let response)):
+                if let imageComments = try? RemoteCommentsFeedLoader.map(data: data, response: response) {
+                    completion(.success(imageComments))
+                } else {
+                    completion(.failure(Error.invalidData))
+                }
             case .failure(let error as NSError) where error.domain == "offline":
-                completion(Error.connectivity)
+                completion(.failure(Error.connectivity))
             default:
-                completion(Error.invalidData)
+                completion(.failure(Error.invalidData))
             }
         }
     }
+    
+    private static var HTTP_OK: Int {
+        200
+    }
+    
+    private static func map(data: Data, response: HTTPURLResponse) throws -> [FeedImageComment] {
+        guard response.statusCode == HTTP_OK else { throw Error.invalidData }
+        if let data = try? JSONDecoder().decode(Root.self, from: data) {
+            return data.items.map({ $0.commentItem })
+        }
+        throw Error.invalidData
+    }
+    
+    private struct Root: Decodable {
+        let items: [RootItem]
+    }
+    
+    private struct RootItem: Decodable {
+        let id: UUID
+        let message: String
+        let createdAt: Date
+        let author: RootItemAuthor
+        
+        enum CodingKeys: String, CodingKey {
+            case id
+                , message
+                , author
+            
+            case createdAt = "created_at"
+        }
+        
+        var commentItem: FeedImageComment {
+            FeedImageComment(
+                id: self.id,
+                message: self.message,
+                createdAt: self.createdAt,
+                author: self.author.commentAuthor)
+        }
+    }
+    
+    private struct RootItemAuthor: Decodable {
+        let username: String
+        
+        var commentAuthor: FeedImageCommentAuthor {
+            FeedImageCommentAuthor(username: self.username)
+        }
+    }
+}
+
+struct FeedImageComment: Equatable {
+    let id: UUID
+    let message: String
+    let createdAt: Date
+    let author: FeedImageCommentAuthor
+}
+
+struct FeedImageCommentAuthor: Equatable {
+    let username: String
 }
 
 class LoadFeedFromRemoteUseCaseTests: XCTestCase {
@@ -69,7 +135,7 @@ class LoadFeedFromRemoteUseCaseTests: XCTestCase {
         let (sut, client) = makeSUT()
         let json = makeInvalidJSON()
         
-        expect(sut, expectedError: SUTError.invalidData) {
+        expect(sut, expectedResult: .failure(SUTError.invalidData)) {
             client.complete(data: json)
         }
     }
@@ -77,21 +143,41 @@ class LoadFeedFromRemoteUseCaseTests: XCTestCase {
     func test_offlineLoad_deliversConnectivityError() {
         let (sut, client) = makeSUT()
         
-        expect(sut, expectedError: SUTError.connectivity) {
+        expect(sut, expectedResult: .failure(SUTError.connectivity)) {
             client.completeAsOffline()
         }
+    }
+    
+    func test_load_emptyItemsResponseRetreivesEmptyArray() {
+        let (sut, client) = makeSUT()
+        let emptyJSON = makeEmptyItemsJSON()
+        
+        expect(sut, expectedResult: .success([])) {
+            client.complete(data: emptyJSON)
+        }
+    }
+    
+    // MARK: Helpers
+    private func makeEmptyItemsJSON() -> Data {
+        Data("{\"items\":[]}".utf8)
     }
     
     private func makeInvalidJSON() -> Data {
         Data("invalid JSON".utf8)
     }
     
-    // MARK: Helpers
-    private func expect(_ sut: RemoteCommentsFeedLoader, expectedError: Error, action: @escaping () -> Void, file: StaticString = #file, line: UInt = #line) {
-        var resultErrors = [NSError]()
-        sut.load { error in resultErrors.append(error! as NSError) }
+    private func expect(_ sut: RemoteCommentsFeedLoader, expectedResult: RemoteCommentsFeedLoader.Result, action: @escaping () -> Void, file: StaticString = #file, line: UInt = #line) {
+        sut.load { result in
+            switch (result, expectedResult) {
+            case (.success(let resultItems), .success(let expectedItems)):
+                XCTAssertEqual(resultItems, expectedItems, file: file, line: line)
+            case (.failure(let resultError), .failure(let expectedError)):
+                XCTAssertEqual(resultError as NSError, expectedError as NSError, file: file, line: line)
+            default:
+                XCTFail("Not expected state, received result: \(result) expected result: \(expectedResult)", file: file, line: line)
+            }
+        }
         action()
-        XCTAssertEqual(resultErrors, [expectedError as NSError], file: file, line: line)
     }
     
     private func makeSUT(url: URL? = nil, file: StaticString = #file, line: UInt = #line) -> (sut: RemoteCommentsFeedLoader, client: HTTPClientMock) {
