@@ -48,6 +48,8 @@ class RemoteCommentsFeedLoader {
 }
 
 class LoadFeedFromRemoteUseCaseTests: XCTestCase {
+    private typealias SUTError = RemoteCommentsFeedLoader.Error
+    
     func test_init_doesNotFetchRemoteData() {
         let (_, client) = makeSUT()
         
@@ -65,22 +67,19 @@ class LoadFeedFromRemoteUseCaseTests: XCTestCase {
     
     func test_loadInvalidJSON_deliversInvalidDataError() {
         let (sut, client) = makeSUT()
+        let json = makeInvalidJSON()
         
-        var resultErrors = [NSError]()
-        sut.load { error in resultErrors.append(error! as NSError) }
-        client.complete(data: makeInvalidJSON())
-        
-        XCTAssertEqual(resultErrors, [RemoteCommentsFeedLoader.Error.invalidData as NSError])
+        expect(sut, expectedError: SUTError.invalidData) {
+            client.complete(data: json)
+        }
     }
     
     func test_offlineLoad_deliversConnectivityError() {
         let (sut, client) = makeSUT()
         
-        var resultErrors = [NSError]()
-        sut.load { error in resultErrors.append(error! as NSError) }
-        client.completeAsOffline()
-        
-        XCTAssertEqual(resultErrors, [RemoteCommentsFeedLoader.Error.connectivity as NSError])
+        expect(sut, expectedError: SUTError.connectivity) {
+            client.completeAsOffline()
+        }
     }
     
     private func makeInvalidJSON() -> Data {
@@ -88,6 +87,13 @@ class LoadFeedFromRemoteUseCaseTests: XCTestCase {
     }
     
     // MARK: Helpers
+    private func expect(_ sut: RemoteCommentsFeedLoader, expectedError: Error, action: @escaping () -> Void, file: StaticString = #file, line: UInt = #line) {
+        var resultErrors = [NSError]()
+        sut.load { error in resultErrors.append(error! as NSError) }
+        action()
+        XCTAssertEqual(resultErrors, [expectedError as NSError], file: file, line: line)
+    }
+    
     private func makeSUT(url: URL? = nil, file: StaticString = #file, line: UInt = #line) -> (sut: RemoteCommentsFeedLoader, client: HTTPClientMock) {
         let client = HTTPClientMock()
         let sut = RemoteCommentsFeedLoader(url: url ?? makeAnyURL(), client: client)
