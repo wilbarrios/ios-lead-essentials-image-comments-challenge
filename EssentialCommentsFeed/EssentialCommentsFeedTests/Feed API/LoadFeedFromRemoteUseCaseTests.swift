@@ -36,16 +36,14 @@ class RemoteCommentsFeedLoader {
 
 class LoadFeedFromRemoteUseCaseTests: XCTestCase {
     func test_init_doesNotFetchRemoteData() {
-        let client = HTTPClientMock()
-        let _ = RemoteCommentsFeedLoader(url: makeAnyURL(), client: client)
+        let (_, client) = makeSUT()
         
         XCTAssertNil(client.requestedURL)
     }
     
     func test_load_requeststGivenURL() {
-        let client = HTTPClientMock()
         let expectedURL = makeAnyURL()
-        let sut = RemoteCommentsFeedLoader(url: expectedURL, client: client)
+        let (sut, client) = makeSUT(url: expectedURL)
         
         sut.load()
         
@@ -53,9 +51,25 @@ class LoadFeedFromRemoteUseCaseTests: XCTestCase {
     }
     
     // MARK: Helpers
+    private func makeSUT(url: URL? = nil, file: StaticString = #file, line: UInt = #line) -> (sut: RemoteCommentsFeedLoader, client: HTTPClientMock) {
+        let client = HTTPClientMock()
+        let sut = RemoteCommentsFeedLoader(url: url ?? makeAnyURL(), client: client)
+        trackMemoryLeaks(client, file: file, line: line)
+        trackMemoryLeaks(sut, file: file, line: line)
+        return (sut, client)
+    }
+    
+    private func trackMemoryLeaks(_ object: AnyObject, file: StaticString = #file, line: UInt = #line) {
+        addTeardownBlock {
+            [weak object] in
+            XCTAssertNil(object, "Instance did not deallocate, potential memory leak", file: file, line: line)
+        }
+    }
+    
     private func makeAnyURL() -> URL {
         return URL(string: "https://any-url.com")!
     }
+    
     
     // MARK: Testing entities
     private class HTTPClientMock: HTTPClient {
