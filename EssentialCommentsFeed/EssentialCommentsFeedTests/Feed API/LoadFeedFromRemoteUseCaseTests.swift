@@ -19,7 +19,7 @@ public protocol HTTPClient {
     func get(from url: URL, completion: @escaping (Result) -> Void) -> HTTPClientTask
 }
 
-class RemoteCommentsFeedLoader {
+final internal class RemoteCommentsFeedLoader {
     
     typealias Result = Swift.Result<[FeedImageComment], Swift.Error>
     
@@ -41,7 +41,7 @@ class RemoteCommentsFeedLoader {
             result in
             switch result {
             case .success((let data, let response)):
-                if let imageComments = try? RemoteCommentsFeedLoader.map(data: data, response: response) {
+                if let imageComments = try? ImageCommentsResponseMapper.map(data: data, response: response) {
                     completion(.success(imageComments))
                 } else {
                     completion(.failure(Error.invalidData))
@@ -53,24 +53,28 @@ class RemoteCommentsFeedLoader {
             }
         }
     }
+}
+
+final internal class ImageCommentsResponseMapper {
+    private typealias Error = RemoteCommentsFeedLoader.Error
+    
+    private static let decoder: JSONDecoder = {
+        let d = JSONDecoder()
+        d.dateDecodingStrategy = .iso8601
+        return d
+    }()
     
     private static var HTTP_OK: Int {
         200
     }
     
-    private static func map(data: Data, response: HTTPURLResponse) throws -> [FeedImageComment] {
-        guard response.statusCode == HTTP_OK else { throw Error.invalidData }
-        if let data = try? makeDecoder().decode(Root.self, from: data) {
-            return data.items.map({ $0.commentItem })
-        }
-        throw Error.invalidData
+    internal static func map(data: Data, response: HTTPURLResponse) throws -> [FeedImageComment] {
+        guard response.statusCode == HTTP_OK,
+              let data = try? decoder.decode(Root.self, from: data) else { throw Error.invalidData }
+        return data.items.map({ $0.commentItem })
     }
     
-    private static func makeDecoder() -> JSONDecoder {
-        let d = JSONDecoder()
-        d.dateDecodingStrategy = .iso8601
-        return d
-    }
+    // MARK: Mapping entities
     
     private struct Root: Decodable {
         let items: [RootItem]
