@@ -60,10 +60,16 @@ class RemoteCommentsFeedLoader {
     
     private static func map(data: Data, response: HTTPURLResponse) throws -> [FeedImageComment] {
         guard response.statusCode == HTTP_OK else { throw Error.invalidData }
-        if let data = try? JSONDecoder().decode(Root.self, from: data) {
+        if let data = try? makeDecoder().decode(Root.self, from: data) {
             return data.items.map({ $0.commentItem })
         }
         throw Error.invalidData
+    }
+    
+    private static func makeDecoder() -> JSONDecoder {
+        let d = JSONDecoder()
+        d.dateDecodingStrategy = .iso8601
+        return d
     }
     
     private struct Root: Decodable {
@@ -157,7 +163,55 @@ class LoadFeedFromRemoteUseCaseTests: XCTestCase {
         }
     }
     
+    func test_load_validDataRetrivesExpectedItemsData() {
+        let (sut, client) = makeSUT()
+        
+        let comment1 = makeComment(
+            message: "Comment One",
+            author: "Author One",
+            createdAt: "2020-05-20T11:24:59+0000")
+        let comment2 = makeComment(
+            message: "Comment Two",
+            author: "Author Two",
+            createdAt: "2020-05-19T14:23:53+0000")
+        
+        let responseData = makeResponseData(comments: [comment1.json, comment2.json])
+        
+        expect(sut, expectedResult: .success([comment1.data, comment2.data])) {
+            client.complete(data: responseData)
+        }
+    }
+    
     // MARK: Helpers
+    private func makeComment(message: String, author: String, createdAt: String) -> (json: [String: Any], data: FeedImageComment) {
+        let author = makeAuthor(username: author)
+        let id = makeUniqueId()
+        let json: [String: Any] =
+             [
+                "id": id.string,
+                "message": message,
+                "created_at": createdAt,
+                "author": author.json
+             ]
+        let data = FeedImageComment(id: id.data, message: message, createdAt: ISO8601DateFormatter().date(from: createdAt)!, author: author.data)
+        return (json, data)
+    }
+    
+    private func makeAuthor(username: String) -> (json: [String: Any], data: FeedImageCommentAuthor) {
+        let json = ["username": username]
+        let data = FeedImageCommentAuthor(username: username)
+        return (json, data)
+    }
+    
+    private func makeUniqueId() -> (data: UUID, string: String) {
+        let data = UUID()
+        return (data, data.uuidString)
+    }
+    
+    private func makeResponseData(comments: Array<[String: Any]>) -> Data {
+        return try! JSONSerialization.data(withJSONObject: ["items": comments])
+    }
+    
     private func makeEmptyItemsJSON() -> Data {
         Data("{\"items\":[]}".utf8)
     }
