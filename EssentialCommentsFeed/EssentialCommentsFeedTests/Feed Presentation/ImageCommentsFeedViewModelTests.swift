@@ -21,6 +21,7 @@ public final class ImageCommentsViewModel {
     
     var onLoadingStateChange: Observer<Bool>?
     var onErrorStateChange: Observer<String>?
+    var onFeedLoad: Observer<[FeedImageComment]>?
     
     init(loader: ImageCommentsLoader) {
         self.loader = loader
@@ -31,6 +32,8 @@ public final class ImageCommentsViewModel {
         loader.load { [weak self] result in
             self?.onLoadingStateChange?(false)
             switch result {
+            case .success(let comments):
+                self?.onFeedLoad?(comments)
             default:
                 self?.onErrorStateChange?(R.ImmageCommentsFeed.loadError)
             }
@@ -87,7 +90,46 @@ class ImageCommentsFeedViewModelTests: XCTestCase {
         XCTAssertEqual(v.errorMessage, localized("IMAGE_COMMENTS_LOAD_ERROR"))
     }
     
+    func test_loadSucceed_displayComments() {
+        let (sut, loader) = makeSUT()
+        let v = bind(sut)
+        
+        let comment1 = makeComment(
+            message: "Comment One",
+            author: "Author One",
+            createdAt: "2020-05-20T11:24:59+0000")
+        let comment2 = makeComment(
+            message: "Comment Two",
+            author: "Author Two",
+            createdAt: "2020-05-19T14:23:53+0000")
+        
+        sut.load()
+        loader.complete(result: .success([comment1.model, comment2.model]))
+        
+        XCTAssertEqual(v.comments, [comment1.model, comment2.model])
+    }
+    
     // MARK: Helpers
+    private func makeAuthor(username: String) -> (json: [String: Any], model: FeedImageCommentAuthor) {
+        let json = ["username": username]
+        let data = FeedImageCommentAuthor(username: username)
+        return (json, data)
+    }
+    
+    private func makeComment(message: String, author: String, createdAt: String) -> (json: [String: Any], model: FeedImageComment) {
+        let author = makeAuthor(username: author)
+        let id = makeUniqueId()
+        let json: [String: Any] =
+             [
+                "id": id.string,
+                "message": message,
+                "created_at": createdAt,
+                "author": author.json
+             ]
+        let data = FeedImageComment(id: id.data, message: message, createdAt: ISO8601DateFormatter().date(from: createdAt)!, author: author.model)
+        return (json, data)
+    }
+    
     private func makeAnyError() -> NSError {
         NSError(domain: "any", code: 1)
     }
@@ -96,6 +138,7 @@ class ImageCommentsFeedViewModelTests: XCTestCase {
         let v = ViewMock()
         sut.onLoadingStateChange = v.loadingStateChange
         sut.onErrorStateChange = v.errorMessageStateChange
+        sut.onFeedLoad = v.loadComments
         trackMemoryLeaks(v, file: file, line: line)
         return v
     }
@@ -155,6 +198,7 @@ class ImageCommentsFeedViewModelTests: XCTestCase {
     private class ViewMock {
         var isLoading: Bool?
         var errorMessage: String?
+        var comments: [FeedImageComment]?
         
         func loadingStateChange(_ isLoading: Bool) {
             self.isLoading = isLoading
@@ -162,6 +206,10 @@ class ImageCommentsFeedViewModelTests: XCTestCase {
         
         func errorMessageStateChange(_ errorMessage: String) {
             self.errorMessage = errorMessage
+        }
+        
+        func loadComments(_ comments: [FeedImageComment]) {
+            self.comments = comments
         }
     }
 }

@@ -117,11 +117,6 @@ class LoadFeedFromRemoteUseCaseTests: XCTestCase {
         return (json, data)
     }
     
-    private func makeUniqueId() -> (data: UUID, string: String) {
-        let data = UUID()
-        return (data, data.uuidString)
-    }
-    
     private func makeResponseData(comments: Array<[String: Any]>) -> Data {
         return try! JSONSerialization.data(withJSONObject: ["items": comments])
     }
