@@ -20,6 +20,7 @@ public final class ImageCommentsViewModel {
     private let loader: ImageCommentsLoader
     
     var onLoadingStateChange: Observer<Bool>?
+    var onErrorStateChange: Observer<String>?
     
     init(loader: ImageCommentsLoader) {
         self.loader = loader
@@ -27,7 +28,13 @@ public final class ImageCommentsViewModel {
     
     func load() {
         onLoadingStateChange?(true)
-        loader.load(completion: {[weak self] _ in self?.onLoadingStateChange?(false)})
+        loader.load { [weak self] result in
+            self?.onLoadingStateChange?(false)
+            switch result {
+            default:
+                self?.onErrorStateChange?(R.ImmageCommentsFeed.loadError)
+            }
+        }
     }
 }
 
@@ -70,10 +77,25 @@ class ImageCommentsFeedViewModelTests: XCTestCase {
         XCTAssertFalse(v.isLoading!)
     }
     
+    func test_loadWithError_displaysLocalizedErrorMessage() {
+        let (sut, loader) = makeSUT()
+        let v = bind(sut)
+        
+        sut.load()
+        loader.complete(result: .failure(makeAnyError()))
+        
+        XCTAssertEqual(v.errorMessage, localized("IMAGE_COMMENTS_LOAD_ERROR"))
+    }
+    
     // MARK: Helpers
+    private func makeAnyError() -> NSError {
+        NSError(domain: "any", code: 1)
+    }
+    
     private func bind(_ sut: ImageCommentsViewModel, file: StaticString = #file, line: UInt = #line) -> ViewMock {
         let v = ViewMock()
         sut.onLoadingStateChange = v.loadingStateChange
+        sut.onErrorStateChange = v.errorMessageStateChange
         trackMemoryLeaks(v, file: file, line: line)
         return v
     }
@@ -113,8 +135,9 @@ class ImageCommentsFeedViewModelTests: XCTestCase {
             return LoaderTaskMock()
         }
         
-        func complete(_ index: Int = 0) {
-            messages[index](makeSuccessResult())
+        func complete(result: Result? = nil, _ index: Int = 0) {
+            let _result = result ?? makeSuccessResult()
+            messages[index](_result)
         }
         
         private func makeSuccessResult() -> Result {
@@ -131,9 +154,14 @@ class ImageCommentsFeedViewModelTests: XCTestCase {
     
     private class ViewMock {
         var isLoading: Bool?
+        var errorMessage: String?
         
         func loadingStateChange(_ isLoading: Bool) {
             self.isLoading = isLoading
+        }
+        
+        func errorMessageStateChange(_ errorMessage: String) {
+            self.errorMessage = errorMessage
         }
     }
 }
