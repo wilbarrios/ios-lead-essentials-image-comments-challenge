@@ -19,6 +19,24 @@ public protocol HTTPClient {
     func get(from url: URL, completion: @escaping (Result) -> Void) -> HTTPClientTask
 }
 
+internal protocol LoaderTask {
+    func cancel()
+}
+
+internal final class HTTPClientTaskWrapper {
+    private let task: HTTPClientTask
+    
+    init(_ task: HTTPClientTask) {
+        self.task = task
+    }
+}
+
+extension HTTPClientTaskWrapper: LoaderTask {
+    func cancel() {
+        task.cancel()
+    }
+}
+
 final internal class RemoteCommentsFeedLoader {
     
     typealias Result = Swift.Result<[FeedImageComment], Swift.Error>
@@ -36,8 +54,9 @@ final internal class RemoteCommentsFeedLoader {
         self.client = client
     }
     
-    func load(completion: @escaping (Result) -> Void) {
-        client.get(from: baseURL) {
+    @discardableResult
+    func load(completion: @escaping (Result) -> Void) -> LoaderTask {
+        let httpClientTask = client.get(from: baseURL) {
             result in
             switch result {
             case .success((let data, let response)):
@@ -52,6 +71,7 @@ final internal class RemoteCommentsFeedLoader {
                 completion(.failure(Error.invalidData))
             }
         }
+        return HTTPClientTaskWrapper(httpClientTask)
     }
 }
 
@@ -186,6 +206,18 @@ class LoadFeedFromRemoteUseCaseTests: XCTestCase {
         }
     }
     
+    func test_cancelTask_doesNotCompleteCommentsLoad() {
+        let (sut, client) = makeSUT()
+        let exp = expectation(description: "Wouldn't complete!")
+        exp.isInverted = true
+        
+        let task = sut.load(completion: { _ in exp.fulfill() })
+        task.cancel()
+        client.complete()
+        
+        wait(for: [exp], timeout: 0.1)
+    }
+    
     // MARK: Helpers
     private func makeComment(message: String, author: String, createdAt: String) -> (json: [String: Any], data: FeedImageComment) {
         let author = makeAuthor(username: author)
@@ -264,6 +296,8 @@ class LoadFeedFromRemoteUseCaseTests: XCTestCase {
             messages.last?.url
         }
         
+        var cancelledRequests = [URL]()
+        
         private typealias Result = HTTPClient.Result
         private typealias CompletionHanlder = (Result) -> Void
         private var messages = [(url: URL, completion: CompletionHanlder)]()
@@ -271,19 +305,25 @@ class LoadFeedFromRemoteUseCaseTests: XCTestCase {
         // Extensions
         func get(from url: URL, completion: @escaping (HTTPClient.Result) -> Void) -> HTTPClientTask {
             messages.append((url, completion))
-            return HTTPClientTaskMock()
+            return HTTPClientTaskMock(cancelCallback: { [weak self] in self?.cancelledRequests.append(url) })
         }
         
         func complete(data: Data = Data(), _ index: Int = 0) {
+            guard isNotCancelled(index) else { return }
             let result: Result = .success((data, makeResponse()))
             messages[index].completion(result)
         }
         
         func completeAsOffline(_ index: Int = 0) {
+            guard isNotCancelled(index) else { return }
             messages[index].completion(.failure(makeOfflineError()))
         }
         
         // Helpers
+        private func isNotCancelled(_ index: Int) -> Bool {
+            !cancelledRequests.contains(messages[index].url)
+        }
+        
         private func makeOfflineError() -> NSError {
             return NSError(domain: "offline", code: 0)
         }
@@ -298,8 +338,14 @@ class LoadFeedFromRemoteUseCaseTests: XCTestCase {
     }
     
     private class HTTPClientTaskMock: HTTPClientTask {
+        private let cancelCallback: () -> Void
+        
+        init(cancelCallback: @escaping () -> Void) {
+            self.cancelCallback = cancelCallback
+        }
+        
         func cancel() {
-            
+            cancelCallback()
         }
     }
 }
