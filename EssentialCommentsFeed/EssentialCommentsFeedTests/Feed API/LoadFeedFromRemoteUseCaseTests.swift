@@ -170,6 +170,18 @@ class LoadFeedFromRemoteUseCaseTests: XCTestCase {
         }
     }
     
+    func test_loadWithNotSuccessHTTPStatusCode_deliversInvalidDataError() {
+        let (sut, client) = makeSUT()
+        let json = makeEmptyItemsJSON()
+        
+        [100, 201, 202, 300, 301, 304, 400, 403, 404, 500].enumerated().forEach({
+            (i, invalidStatusCode) in
+            expect(sut, expectedResult: .failure(SUTError.invalidData)) {
+                client.complete(statusCode: invalidStatusCode, data: json, i)
+            }
+        })
+    }
+    
     func test_offlineLoad_deliversConnectivityError() {
         let (sut, client) = makeSUT()
         
@@ -308,9 +320,9 @@ class LoadFeedFromRemoteUseCaseTests: XCTestCase {
             return HTTPClientTaskMock(cancelCallback: { [weak self] in self?.cancelledRequests.append(url) })
         }
         
-        func complete(data: Data = Data(), _ index: Int = 0) {
+        func complete(statusCode: Int = 200, data: Data = Data(), _ index: Int = 0) {
             guard isNotCancelled(index) else { return }
-            let result: Result = .success((data, makeResponse()))
+            let result: Result = .success((data, makeResponse(withHTTPStatusCode: statusCode)))
             messages[index].completion(result)
         }
         
