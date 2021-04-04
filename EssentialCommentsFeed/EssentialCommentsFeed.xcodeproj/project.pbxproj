@@ -535,6 +535,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = wb.devs.EssentialCommentsFeedTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "macosx iphone iphonesimulator";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
@@ -555,6 +556,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = wb.devs.EssentialCommentsFeedTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "macosx iphone iphonesimulator";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
