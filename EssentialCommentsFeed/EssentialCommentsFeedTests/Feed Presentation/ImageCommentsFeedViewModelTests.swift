@@ -48,13 +48,6 @@ public final class ImageCommentsViewModel {
     }
 }
 
-public protocol ImageCommentsLoader {
-    typealias Result = Swift.Result<[FeedImageComment], Error>
-    
-    @discardableResult
-    func load(completion: @escaping (Result) -> Void) -> LoaderTask
-}
-
 class ImageCommentsFeedViewModelTests: XCTestCase, ImageCommentsTest {
     func test_title_isLocalized() {
         XCTAssertEqual(ImageCommentsViewModel.title, localized("IMAGE_COMMENTS_VIEW_TITLE"))
