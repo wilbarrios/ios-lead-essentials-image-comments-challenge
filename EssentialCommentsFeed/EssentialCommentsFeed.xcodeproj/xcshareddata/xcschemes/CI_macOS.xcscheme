@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BF918F76261A7C700094977A"
-               BuildableName = "EssentialCommentsFeediOS.framework"
-               BlueprintName = "EssentialCommentsFeediOS"
+               BlueprintIdentifier = "BFA30B422617B28200756660"
+               BuildableName = "EssentialCommentsFeed.framework"
+               BlueprintName = "EssentialCommentsFeed"
                ReferencedContainer = "container:EssentialCommentsFeed.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -32,9 +32,9 @@
       <CodeCoverageTargets>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "BF918F76261A7C700094977A"
-            BuildableName = "EssentialCommentsFeediOS.framework"
-            BlueprintName = "EssentialCommentsFeediOS"
+            BlueprintIdentifier = "BFA30B422617B28200756660"
+            BuildableName = "EssentialCommentsFeed.framework"
+            BlueprintName = "EssentialCommentsFeed"
             ReferencedContainer = "container:EssentialCommentsFeed.xcodeproj">
          </BuildableReference>
       </CodeCoverageTargets>
@@ -44,9 +44,9 @@
             testExecutionOrdering = "random">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BF918F85261A7D0E0094977A"
-               BuildableName = "EssentialCommentsFeediOSTests.xctest"
-               BlueprintName = "EssentialCommentsFeediOSTests"
+               BlueprintIdentifier = "BFA30B552617B3C200756660"
+               BuildableName = "EssentialCommentsFeedTests.xctest"
+               BlueprintName = "EssentialCommentsFeedTests"
                ReferencedContainer = "container:EssentialCommentsFeed.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -72,9 +72,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "BF918F76261A7C700094977A"
-            BuildableName = "EssentialCommentsFeediOS.framework"
-            BlueprintName = "EssentialCommentsFeediOS"
+            BlueprintIdentifier = "BFA30B422617B28200756660"
+            BuildableName = "EssentialCommentsFeed.framework"
+            BlueprintName = "EssentialCommentsFeed"
             ReferencedContainer = "container:EssentialCommentsFeed.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

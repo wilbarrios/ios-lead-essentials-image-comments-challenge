@@ -22,8 +22,6 @@
 		BF918F5B261A75810094977A /* ImageCommentsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF918F5A261A75810094977A /* ImageCommentsTests.swift */; };
 		BF918F5F261A76840094977A /* ImageCommentsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF918F5E261A76840094977A /* ImageCommentsLoader.swift */; };
 		BF918F63261A76E70094977A /* ImageCommentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF918F62261A76E70094977A /* ImageCommentsViewModel.swift */; };
-		BF918F7B261A7C700094977A /* EssentialCommentsFeediOS.h in Headers */ = {isa = PBXBuildFile; fileRef = BF918F79261A7C700094977A /* EssentialCommentsFeediOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BF918F89261A7D0E0094977A /* EssentialCommentsFeediOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF918F88261A7D0E0094977A /* EssentialCommentsFeediOSTests.swift */; };
 		BF918F8B261A7D0E0094977A /* EssentialCommentsFeediOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF918F77261A7C700094977A /* EssentialCommentsFeediOS.framework */; };
 		BFA30B5B2617B3C200756660 /* EssentialCommentsFeed.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA30B432617B28200756660 /* EssentialCommentsFeed.framework */; };
 		BFA30B672617B4E400756660 /* LoadFeedFromRemoteUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA30B662617B4E400756660 /* LoadFeedFromRemoteUseCaseTests.swift */; };
@@ -65,10 +63,8 @@
 		BF918F5E261A76840094977A /* ImageCommentsLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCommentsLoader.swift; sourceTree = "<group>"; };
 		BF918F62261A76E70094977A /* ImageCommentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCommentsViewModel.swift; sourceTree = "<group>"; };
 		BF918F77261A7C700094977A /* EssentialCommentsFeediOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EssentialCommentsFeediOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		BF918F79261A7C700094977A /* EssentialCommentsFeediOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EssentialCommentsFeediOS.h; sourceTree = "<group>"; };
 		BF918F7A261A7C700094977A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BF918F86261A7D0E0094977A /* EssentialCommentsFeediOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EssentialCommentsFeediOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		BF918F88261A7D0E0094977A /* EssentialCommentsFeediOSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EssentialCommentsFeediOSTests.swift; sourceTree = "<group>"; };
 		BF918F8A261A7D0E0094977A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BFA30B432617B28200756660 /* EssentialCommentsFeed.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EssentialCommentsFeed.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFA30B472617B28200756660 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -172,7 +168,6 @@
 		BF918F78261A7C700094977A /* EssentialCommentsFeediOS */ = {
 			isa = PBXGroup;
 			children = (
-				BF918F79261A7C700094977A /* EssentialCommentsFeediOS.h */,
 				BF918F7A261A7C700094977A /* Info.plist */,
 			);
 			path = EssentialCommentsFeediOS;
@@ -181,7 +176,6 @@
 		BF918F87261A7D0E0094977A /* EssentialCommentsFeediOSTests */ = {
 			isa = PBXGroup;
 			children = (
-				BF918F88261A7D0E0094977A /* EssentialCommentsFeediOSTests.swift */,
 				BF918F8A261A7D0E0094977A /* Info.plist */,
 			);
 			path = EssentialCommentsFeediOSTests;
@@ -246,7 +240,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF918F7B261A7C700094977A /* EssentialCommentsFeediOS.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -423,7 +416,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF918F89261A7D0E0094977A /* EssentialCommentsFeediOSTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
