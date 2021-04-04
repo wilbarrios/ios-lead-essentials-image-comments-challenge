@@ -15,5 +15,10 @@ extension XCTestCase {
             XCTAssertNil(object, "Instance did not deallocate, potential memory leak", file: file, line: line)
         }
     }
+    
+    func makeUniqueId() -> (data: UUID, string: String) {
+        let data = UUID()
+        return (data, data.uuidString)
+    }
 }
 
