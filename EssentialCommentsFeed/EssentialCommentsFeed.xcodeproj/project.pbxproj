@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BF3F123726196606002BC356 /* HTTPClientTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3F123626196606002BC356 /* HTTPClientTask.swift */; };
+		BF3F123B2619661F002BC356 /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3F123A2619661F002BC356 /* HTTPClient.swift */; };
+		BF3F124026196662002BC356 /* RemoteCommentsFeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3F123F26196662002BC356 /* RemoteCommentsFeedLoader.swift */; };
+		BF3F12462619668F002BC356 /* ImageCommentsResponseMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3F12452619668F002BC356 /* ImageCommentsResponseMapper.swift */; };
+		BF3F124A261966BD002BC356 /* HTTPClientTaskWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3F1249261966BD002BC356 /* HTTPClientTaskWrapper.swift */; };
+		BF3F124E261966D9002BC356 /* LoaderTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3F124D261966D9002BC356 /* LoaderTask.swift */; };
+		BF3F125326196714002BC356 /* FeedImageComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3F125226196714002BC356 /* FeedImageComment.swift */; };
+		BF3F125726196736002BC356 /* FeedImageCommentAuthor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3F125626196736002BC356 /* FeedImageCommentAuthor.swift */; };
 		BFA30B482617B28200756660 /* EssentialCommentsFeed.h in Headers */ = {isa = PBXBuildFile; fileRef = BFA30B462617B28200756660 /* EssentialCommentsFeed.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BFA30B5B2617B3C200756660 /* EssentialCommentsFeed.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA30B432617B28200756660 /* EssentialCommentsFeed.framework */; };
 		BFA30B672617B4E400756660 /* LoadFeedFromRemoteUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA30B662617B4E400756660 /* LoadFeedFromRemoteUseCaseTests.swift */; };
@@ -23,6 +31,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BF3F123626196606002BC356 /* HTTPClientTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClientTask.swift; sourceTree = "<group>"; };
+		BF3F123A2619661F002BC356 /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
+		BF3F123F26196662002BC356 /* RemoteCommentsFeedLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteCommentsFeedLoader.swift; sourceTree = "<group>"; };
+		BF3F12452619668F002BC356 /* ImageCommentsResponseMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCommentsResponseMapper.swift; sourceTree = "<group>"; };
+		BF3F1249261966BD002BC356 /* HTTPClientTaskWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClientTaskWrapper.swift; sourceTree = "<group>"; };
+		BF3F124D261966D9002BC356 /* LoaderTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderTask.swift; sourceTree = "<group>"; };
+		BF3F125226196714002BC356 /* FeedImageComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageComment.swift; sourceTree = "<group>"; };
+		BF3F125626196736002BC356 /* FeedImageCommentAuthor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageCommentAuthor.swift; sourceTree = "<group>"; };
 		BFA30B432617B28200756660 /* EssentialCommentsFeed.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EssentialCommentsFeed.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFA30B462617B28200756660 /* EssentialCommentsFeed.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EssentialCommentsFeed.h; sourceTree = "<group>"; };
 		BFA30B472617B28200756660 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -50,6 +66,36 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BF3F1235261965EE002BC356 /* Comments Feed API */ = {
+			isa = PBXGroup;
+			children = (
+				BF3F123E26196656002BC356 /* Loader */,
+				BF3F123626196606002BC356 /* HTTPClientTask.swift */,
+				BF3F123A2619661F002BC356 /* HTTPClient.swift */,
+				BF3F1249261966BD002BC356 /* HTTPClientTaskWrapper.swift */,
+			);
+			path = "Comments Feed API";
+			sourceTree = "<group>";
+		};
+		BF3F123E26196656002BC356 /* Loader */ = {
+			isa = PBXGroup;
+			children = (
+				BF3F123F26196662002BC356 /* RemoteCommentsFeedLoader.swift */,
+				BF3F12452619668F002BC356 /* ImageCommentsResponseMapper.swift */,
+				BF3F124D261966D9002BC356 /* LoaderTask.swift */,
+			);
+			path = Loader;
+			sourceTree = "<group>";
+		};
+		BF3F125126196707002BC356 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				BF3F125226196714002BC356 /* FeedImageComment.swift */,
+				BF3F125626196736002BC356 /* FeedImageCommentAuthor.swift */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
 		BFA30B392617B28200756660 = {
 			isa = PBXGroup;
 			children = (
@@ -71,6 +117,8 @@
 		BFA30B452617B28200756660 /* EssentialCommentsFeed */ = {
 			isa = PBXGroup;
 			children = (
+				BF3F125126196707002BC356 /* Entities */,
+				BF3F1235261965EE002BC356 /* Comments Feed API */,
 				BFA30B462617B28200756660 /* EssentialCommentsFeed.h */,
 				BFA30B472617B28200756660 /* Info.plist */,
 			);
@@ -155,6 +203,7 @@
 				TargetAttributes = {
 					BFA30B422617B28200756660 = {
 						CreatedOnToolsVersion = 12.4;
+						LastSwiftMigration = 1240;
 					};
 					BFA30B552617B3C200756660 = {
 						CreatedOnToolsVersion = 12.4;
@@ -203,6 +252,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF3F125326196714002BC356 /* FeedImageComment.swift in Sources */,
+				BF3F123B2619661F002BC356 /* HTTPClient.swift in Sources */,
+				BF3F124E261966D9002BC356 /* LoaderTask.swift in Sources */,
+				BF3F124026196662002BC356 /* RemoteCommentsFeedLoader.swift in Sources */,
+				BF3F125726196736002BC356 /* FeedImageCommentAuthor.swift in Sources */,
+				BF3F124A261966BD002BC356 /* HTTPClientTaskWrapper.swift in Sources */,
+				BF3F123726196606002BC356 /* HTTPClientTask.swift in Sources */,
+				BF3F12462619668F002BC356 /* ImageCommentsResponseMapper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -349,6 +406,7 @@
 		BFA30B4C2617B28200756660 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
@@ -365,6 +423,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = wb.devs.EssentialCommentsFeed;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -372,6 +431,7 @@
 		BFA30B4D2617B28200756660 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
@@ -395,6 +455,7 @@
 		BFA30B5E2617B3C200756660 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -414,6 +475,7 @@
 		BFA30B5F2617B3C200756660 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
