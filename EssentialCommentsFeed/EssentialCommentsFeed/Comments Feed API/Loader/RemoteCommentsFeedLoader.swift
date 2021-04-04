@@ -7,7 +7,7 @@
 
 import Foundation
 
-final public class RemoteCommentsFeedLoader {
+final public class RemoteCommentsFeedLoader: ImageCommentsLoader {
     
     public typealias Result = Swift.Result<[FeedImageComment], Swift.Error>
     
