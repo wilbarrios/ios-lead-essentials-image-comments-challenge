@@ -9,7 +9,7 @@ import Foundation
 import XCTest
 import EssentialCommentsFeed
 
-class LoadFeedFromRemoteUseCaseTests: XCTestCase {
+class LoadFeedFromRemoteUseCaseTests: XCTestCase, ImageCommentsTest {
     private typealias SUTError = RemoteCommentsFeedLoader.Error
     
     func test_init_doesNotFetchRemoteData() {
@@ -79,7 +79,7 @@ class LoadFeedFromRemoteUseCaseTests: XCTestCase {
         
         let responseData = makeResponseData(comments: [comment1.json, comment2.json])
         
-        expect(sut, expectedResult: .success([comment1.data, comment2.data])) {
+        expect(sut, expectedResult: .success([comment1.model, comment2.model])) {
             client.complete(data: responseData)
         }
     }
@@ -94,27 +94,6 @@ class LoadFeedFromRemoteUseCaseTests: XCTestCase {
         client.complete()
         
         wait(for: [exp], timeout: 0.1)
-    }
-    
-    // MARK: Helpers
-    private func makeComment(message: String, author: String, createdAt: String) -> (json: [String: Any], data: FeedImageComment) {
-        let author = makeAuthor(username: author)
-        let id = makeUniqueId()
-        let json: [String: Any] =
-             [
-                "id": id.string,
-                "message": message,
-                "created_at": createdAt,
-                "author": author.json
-             ]
-        let data = FeedImageComment(id: id.data, message: message, createdAt: ISO8601DateFormatter().date(from: createdAt)!, author: author.data)
-        return (json, data)
-    }
-    
-    private func makeAuthor(username: String) -> (json: [String: Any], data: FeedImageCommentAuthor) {
-        let json = ["username": username]
-        let data = FeedImageCommentAuthor(username: username)
-        return (json, data)
     }
     
     private func makeResponseData(comments: Array<[String: Any]>) -> Data {

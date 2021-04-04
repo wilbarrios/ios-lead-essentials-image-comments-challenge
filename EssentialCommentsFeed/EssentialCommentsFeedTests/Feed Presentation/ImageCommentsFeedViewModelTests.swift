@@ -55,7 +55,7 @@ public protocol ImageCommentsLoader {
     func load(completion: @escaping (Result) -> Void) -> LoaderTask
 }
 
-class ImageCommentsFeedViewModelTests: XCTestCase {
+class ImageCommentsFeedViewModelTests: XCTestCase, ImageCommentsTest {
     func test_title_isLocalized() {
         XCTAssertEqual(ImageCommentsViewModel.title, localized("IMAGE_COMMENTS_VIEW_TITLE"))
     }
@@ -126,26 +126,6 @@ class ImageCommentsFeedViewModelTests: XCTestCase {
     }
     
     // MARK: Helpers
-    private func makeAuthor(username: String) -> (json: [String: Any], model: FeedImageCommentAuthor) {
-        let json = ["username": username]
-        let data = FeedImageCommentAuthor(username: username)
-        return (json, data)
-    }
-    
-    private func makeComment(message: String, author: String, createdAt: String) -> (json: [String: Any], model: FeedImageComment) {
-        let author = makeAuthor(username: author)
-        let id = makeUniqueId()
-        let json: [String: Any] =
-             [
-                "id": id.string,
-                "message": message,
-                "created_at": createdAt,
-                "author": author.json
-             ]
-        let data = FeedImageComment(id: id.data, message: message, createdAt: ISO8601DateFormatter().date(from: createdAt)!, author: author.model)
-        return (json, data)
-    }
-    
     private func makeAnyError() -> NSError {
         NSError(domain: "any", code: 1)
     }

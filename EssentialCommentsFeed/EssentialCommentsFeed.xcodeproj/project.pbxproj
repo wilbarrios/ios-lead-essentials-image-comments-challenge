@@ -19,6 +19,7 @@
 		BF3F126C261970A5002BC356 /* R.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3F126B261970A5002BC356 /* R.swift */; };
 		BF3F127526197158002BC356 /* ImageComments.strings in Resources */ = {isa = PBXBuildFile; fileRef = BF3F127726197158002BC356 /* ImageComments.strings */; };
 		BF918F55261A53530094977A /* XCTestCase+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF918F54261A53530094977A /* XCTestCase+Extension.swift */; };
+		BF918F5B261A75810094977A /* ImageCommentsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF918F5A261A75810094977A /* ImageCommentsTests.swift */; };
 		BFA30B5B2617B3C200756660 /* EssentialCommentsFeed.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA30B432617B28200756660 /* EssentialCommentsFeed.framework */; };
 		BFA30B672617B4E400756660 /* LoadFeedFromRemoteUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA30B662617B4E400756660 /* LoadFeedFromRemoteUseCaseTests.swift */; };
 /* End PBXBuildFile section */
@@ -48,6 +49,7 @@
 		BF3F127A261971A3002BC356 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/ImageComments.strings"; sourceTree = "<group>"; };
 		BF3F127D261971C0002BC356 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/ImageComments.strings; sourceTree = "<group>"; };
 		BF918F54261A53530094977A /* XCTestCase+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Extension.swift"; sourceTree = "<group>"; };
+		BF918F5A261A75810094977A /* ImageCommentsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCommentsTests.swift; sourceTree = "<group>"; };
 		BFA30B432617B28200756660 /* EssentialCommentsFeed.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EssentialCommentsFeed.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFA30B472617B28200756660 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BFA30B562617B3C200756660 /* EssentialCommentsFeedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EssentialCommentsFeedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -125,6 +127,7 @@
 			isa = PBXGroup;
 			children = (
 				BF918F54261A53530094977A /* XCTestCase+Extension.swift */,
+				BF918F5A261A75810094977A /* ImageCommentsTests.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -307,6 +310,7 @@
 				BF918F55261A53530094977A /* XCTestCase+Extension.swift in Sources */,
 				BF3F126626196C23002BC356 /* ImageCommentsFeedViewModelTests.swift in Sources */,
 				BFA30B672617B4E400756660 /* LoadFeedFromRemoteUseCaseTests.swift in Sources */,
+				BF918F5B261A75810094977A /* ImageCommentsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
