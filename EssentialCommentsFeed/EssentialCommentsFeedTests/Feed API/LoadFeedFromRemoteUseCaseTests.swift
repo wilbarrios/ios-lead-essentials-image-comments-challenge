@@ -156,13 +156,6 @@ class LoadFeedFromRemoteUseCaseTests: XCTestCase {
         return (sut, client)
     }
     
-    private func trackMemoryLeaks(_ object: AnyObject, file: StaticString = #file, line: UInt = #line) {
-        addTeardownBlock {
-            [weak object] in
-            XCTAssertNil(object, "Instance did not deallocate, potential memory leak", file: file, line: line)
-        }
-    }
-    
     private func makeAnyURL() -> URL {
         return URL(string: "https://any-url.com")!
     }
