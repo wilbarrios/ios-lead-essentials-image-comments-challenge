@@ -7,46 +7,7 @@
 
 import Foundation
 import XCTest
-@testable import EssentialCommentsFeed
-
-public final class ImageCommentsViewModel {
-    
-    typealias Observer<T> = (T) -> Void
-    
-    public static var title: String {
-        return R.ImmageCommentsFeed.title
-    }
-    
-    private let loader: ImageCommentsLoader
-    
-    var onLoadingStateChange: Observer<Bool>?
-    var onErrorStateChange: Observer<String>?
-    var onFeedLoad: Observer<[FeedImageComment]>?
-    
-    init(loader: ImageCommentsLoader) {
-        self.loader = loader
-    }
-    
-    private var task: LoaderTask?
-    
-    func load() {
-        onLoadingStateChange?(true)
-        task = loader.load { [weak self] result in
-            guard let self = self else { return }
-            self.onLoadingStateChange?(false)
-            switch result {
-            case .success(let comments):
-                self.onFeedLoad?(comments)
-            default:
-                self.onErrorStateChange?(R.ImmageCommentsFeed.loadError)
-            }
-        }
-    }
-    
-    func cancelLoadIfNeeded() {
-        task?.cancel()
-    }
-}
+import EssentialCommentsFeed
 
 class ImageCommentsFeedViewModelTests: XCTestCase, ImageCommentsTest {
     func test_title_isLocalized() {
@@ -142,8 +103,7 @@ class ImageCommentsFeedViewModelTests: XCTestCase, ImageCommentsTest {
     
     private func localized(_ key: String, file: StaticString = #file, line: UInt = #line) -> String {
         let table = "ImageComments"
-//        let bundle = Bundle(for: ImageCommentsViewModel.self)
-        let bundle = Bundle(for: R.self)
+        let bundle = Bundle(for: ImageCommentsViewModel.self)
         let value = bundle.localizedString(forKey: key, value: nil, table: table)
         if value == key {
             XCTFail("Missing localized string for key: \(key) in table: \(table)", file: file, line: line)
