@@ -10,20 +10,31 @@ import XCTest
 @testable import EssentialCommentsFeed
 
 public final class ImageCommentsViewModel {
+    
+    typealias Observer<T> = (T) -> Void
+    
     public static var title: String {
         return R.ImmageCommentsFeed.title
     }
     
     private let loader: ImageCommentsLoader
     
+    var onLoadingStateChange: Observer<Bool>?
+    
     init(loader: ImageCommentsLoader) {
         self.loader = loader
+    }
+    
+    func load() {
+        onLoadingStateChange?(true)
+        loader.load(completion: {_ in })
     }
 }
 
 public protocol ImageCommentsLoader {
     typealias Result = Swift.Result<[FeedImageComment], Error>
     
+    @discardableResult
     func load(completion: @escaping (Result) -> Void) -> LoaderTask
 }
 
@@ -38,7 +49,24 @@ class ImageCommentsFeedViewModelTests: XCTestCase {
         XCTAssertEqual(loader.messagesCount, 0)
     }
     
+    func test_load_fetchsFeedWithLoadingState() {
+        let (sut, loader) = makeSUT()
+        let v = bind(sut)
+        
+        sut.load()
+        
+        XCTAssertEqual(loader.messagesCount, 1)
+        XCTAssertTrue(v.isLoading!)
+    }
+    
     // MARK: Helpers
+    private func bind(_ sut: ImageCommentsViewModel, file: StaticString = #file, line: UInt = #line) -> ViewMock {
+        let v = ViewMock()
+        sut.onLoadingStateChange = v.loadingStateChange
+        trackMemoryLeaks(v, file: file, line: line)
+        return v
+    }
+    
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: ImageCommentsViewModel, loader: ImageCommentsFeedLoaderMock) {
         let loader = ImageCommentsFeedLoaderMock()
         let sut = ImageCommentsViewModel(loader: loader)
@@ -79,6 +107,14 @@ class ImageCommentsFeedViewModelTests: XCTestCase {
         var isCanceled: Bool = false
         func cancel() {
             isCanceled = true
+        }
+    }
+    
+    private class ViewMock {
+        var isLoading: Bool?
+        
+        func loadingStateChange(_ isLoading: Bool) {
+            self.isLoading = isLoading
         }
     }
 }
