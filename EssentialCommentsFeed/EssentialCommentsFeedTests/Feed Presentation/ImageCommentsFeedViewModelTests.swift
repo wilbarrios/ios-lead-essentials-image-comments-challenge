@@ -27,7 +27,7 @@ public final class ImageCommentsViewModel {
     
     func load() {
         onLoadingStateChange?(true)
-        loader.load(completion: {_ in })
+        loader.load(completion: {[weak self] _ in self?.onLoadingStateChange?(false)})
     }
 }
 
@@ -49,7 +49,7 @@ class ImageCommentsFeedViewModelTests: XCTestCase {
         XCTAssertEqual(loader.messagesCount, 0)
     }
     
-    func test_load_fetchsFeedWithLoadingState() {
+    func test_load_fetchsFeedWithAndStartsLoading() {
         let (sut, loader) = makeSUT()
         let v = bind(sut)
         
@@ -57,6 +57,17 @@ class ImageCommentsFeedViewModelTests: XCTestCase {
         
         XCTAssertEqual(loader.messagesCount, 1)
         XCTAssertTrue(v.isLoading!)
+    }
+    
+    
+    func test_stopsLoading_onFeedLoadCompletion() {
+        let (sut, loader) = makeSUT()
+        let v = bind(sut)
+        
+        sut.load()
+        loader.complete()
+        
+        XCTAssertFalse(v.isLoading!)
     }
     
     // MARK: Helpers
@@ -100,6 +111,14 @@ class ImageCommentsFeedViewModelTests: XCTestCase {
         func load(completion: @escaping (Result) -> Void) -> LoaderTask {
             messages.append(completion)
             return LoaderTaskMock()
+        }
+        
+        func complete(_ index: Int = 0) {
+            messages[index](makeSuccessResult())
+        }
+        
+        private func makeSuccessResult() -> Result {
+            .success([])
         }
     }
     
