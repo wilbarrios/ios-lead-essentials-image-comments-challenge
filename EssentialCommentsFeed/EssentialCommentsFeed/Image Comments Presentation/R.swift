@@ -15,6 +15,10 @@ internal class R {
             return get(key: "IMAGE_COMMENTS_VIEW_TITLE")
         }
         
+        static var loadError: String {
+            return get(key: "IMAGE_COMMENTS_LOAD_ERROR")
+        }
+        
         private static func get(key: String) -> String {
             NSLocalizedString(key,
                         tableName: table,
