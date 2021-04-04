@@ -27,17 +27,24 @@ public final class ImageCommentsViewModel {
         self.loader = loader
     }
     
+    private var task: LoaderTask?
+    
     func load() {
         onLoadingStateChange?(true)
-        loader.load { [weak self] result in
-            self?.onLoadingStateChange?(false)
+        task = loader.load { [weak self] result in
+            guard let self = self else { return }
+            self.onLoadingStateChange?(false)
             switch result {
             case .success(let comments):
-                self?.onFeedLoad?(comments)
+                self.onFeedLoad?(comments)
             default:
-                self?.onErrorStateChange?(R.ImmageCommentsFeed.loadError)
+                self.onErrorStateChange?(R.ImmageCommentsFeed.loadError)
             }
         }
+    }
+    
+    func cancelLoadIfNeeded() {
+        task?.cancel()
     }
 }
 
@@ -109,6 +116,15 @@ class ImageCommentsFeedViewModelTests: XCTestCase {
         XCTAssertEqual(v.comments, [comment1.model, comment2.model])
     }
     
+    func test_cancelLoad_doesCancelFeedLoaderRequest() {
+        let (sut, loader) = makeSUT()
+        
+        sut.load()
+        sut.cancelLoadIfNeeded()
+        
+        XCTAssertTrue(loader.taskIsCancelled())
+    }
+    
     // MARK: Helpers
     private func makeAuthor(username: String) -> (json: [String: Any], model: FeedImageCommentAuthor) {
         let json = ["username": username]
@@ -168,6 +184,7 @@ class ImageCommentsFeedViewModelTests: XCTestCase {
         private typealias CompletionHanlder = (Result) -> Void
         
         private var messages = [CompletionHanlder]()
+        private var tasks = [LoaderTaskMock]()
         
         var messagesCount: Int {
             messages.count
@@ -175,12 +192,18 @@ class ImageCommentsFeedViewModelTests: XCTestCase {
         
         func load(completion: @escaping (Result) -> Void) -> LoaderTask {
             messages.append(completion)
-            return LoaderTaskMock()
+            let task = LoaderTaskMock()
+            tasks.append(task)
+            return task
         }
         
         func complete(result: Result? = nil, _ index: Int = 0) {
             let _result = result ?? makeSuccessResult()
             messages[index](_result)
+        }
+        
+        func taskIsCancelled(_ index: Int = 0) -> Bool {
+            tasks[index].isCancelled
         }
         
         private func makeSuccessResult() -> Result {
@@ -189,9 +212,9 @@ class ImageCommentsFeedViewModelTests: XCTestCase {
     }
     
     private class LoaderTaskMock: LoaderTask {
-        var isCanceled: Bool = false
+        var isCancelled: Bool = false
         func cancel() {
-            isCanceled = true
+            isCancelled = true
         }
     }
     
