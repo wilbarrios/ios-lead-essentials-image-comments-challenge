@@ -15,7 +15,6 @@
 		BF3F124E261966D9002BC356 /* LoaderTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3F124D261966D9002BC356 /* LoaderTask.swift */; };
 		BF3F125326196714002BC356 /* FeedImageComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3F125226196714002BC356 /* FeedImageComment.swift */; };
 		BF3F125726196736002BC356 /* FeedImageCommentAuthor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3F125626196736002BC356 /* FeedImageCommentAuthor.swift */; };
-		BFA30B482617B28200756660 /* EssentialCommentsFeed.h in Headers */ = {isa = PBXBuildFile; fileRef = BFA30B462617B28200756660 /* EssentialCommentsFeed.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BFA30B5B2617B3C200756660 /* EssentialCommentsFeed.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA30B432617B28200756660 /* EssentialCommentsFeed.framework */; };
 		BFA30B672617B4E400756660 /* LoadFeedFromRemoteUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA30B662617B4E400756660 /* LoadFeedFromRemoteUseCaseTests.swift */; };
 /* End PBXBuildFile section */
@@ -40,7 +39,6 @@
 		BF3F125226196714002BC356 /* FeedImageComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageComment.swift; sourceTree = "<group>"; };
 		BF3F125626196736002BC356 /* FeedImageCommentAuthor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageCommentAuthor.swift; sourceTree = "<group>"; };
 		BFA30B432617B28200756660 /* EssentialCommentsFeed.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EssentialCommentsFeed.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		BFA30B462617B28200756660 /* EssentialCommentsFeed.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EssentialCommentsFeed.h; sourceTree = "<group>"; };
 		BFA30B472617B28200756660 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BFA30B562617B3C200756660 /* EssentialCommentsFeedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EssentialCommentsFeedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFA30B5A2617B3C200756660 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -87,13 +85,13 @@
 			path = Loader;
 			sourceTree = "<group>";
 		};
-		BF3F125126196707002BC356 /* Entities */ = {
+		BF3F125126196707002BC356 /* Image Comments Feature */ = {
 			isa = PBXGroup;
 			children = (
 				BF3F125226196714002BC356 /* FeedImageComment.swift */,
 				BF3F125626196736002BC356 /* FeedImageCommentAuthor.swift */,
 			);
-			path = Entities;
+			path = "Image Comments Feature";
 			sourceTree = "<group>";
 		};
 		BFA30B392617B28200756660 = {
@@ -117,9 +115,8 @@
 		BFA30B452617B28200756660 /* EssentialCommentsFeed */ = {
 			isa = PBXGroup;
 			children = (
-				BF3F125126196707002BC356 /* Entities */,
+				BF3F125126196707002BC356 /* Image Comments Feature */,
 				BF3F1235261965EE002BC356 /* Comments Feed API */,
-				BFA30B462617B28200756660 /* EssentialCommentsFeed.h */,
 				BFA30B472617B28200756660 /* Info.plist */,
 			);
 			path = EssentialCommentsFeed;
@@ -149,7 +146,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BFA30B482617B28200756660 /* EssentialCommentsFeed.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
