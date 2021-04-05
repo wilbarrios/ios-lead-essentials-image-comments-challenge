@@ -15,7 +15,27 @@ struct ImageCommentsFeedViewModel {
 }
 
 class ImageCommentsFeedController: UITableViewController {
-    private let feed = ImageCommentsFeedViewModel.prototypedFeed
+    private var feed = [ImageCommentsFeedViewModel]()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        refresh()
+        tableView.setContentOffset(CGPoint(x: 0, y: -tableView.contentInset.top), animated: false)
+    }
+    
+    @IBAction func refresh() {
+        refreshControl?.beginRefreshing()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            if self.feed.isEmpty {
+                self.feed = ImageCommentsFeedViewModel.prototypedFeed
+                self.tableView.reloadData()
+            }
+            self.refreshControl?.endRefreshing()
+        }
+    }
+    
+    // TODO: Refresh controller...
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return feed.count

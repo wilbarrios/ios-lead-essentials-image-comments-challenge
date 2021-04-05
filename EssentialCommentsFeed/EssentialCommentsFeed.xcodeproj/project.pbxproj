@@ -18,6 +18,7 @@
 		BF3F126626196C23002BC356 /* ImageCommentsFeedViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3F126526196C23002BC356 /* ImageCommentsFeedViewModelTests.swift */; };
 		BF3F126C261970A5002BC356 /* R.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3F126B261970A5002BC356 /* R.swift */; };
 		BF3F127526197158002BC356 /* ImageComments.strings in Resources */ = {isa = PBXBuildFile; fileRef = BF3F127726197158002BC356 /* ImageComments.strings */; };
+		BF8807DB261BDAB90057C726 /* ImageCommentsFeedControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8807DA261BDAB90057C726 /* ImageCommentsFeedControllerTests.swift */; };
 		BF918F55261A53530094977A /* XCTestCase+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF918F54261A53530094977A /* XCTestCase+Extension.swift */; };
 		BF918F5B261A75810094977A /* ImageCommentsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF918F5A261A75810094977A /* ImageCommentsTests.swift */; };
 		BF918F5F261A76840094977A /* ImageCommentsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF918F5E261A76840094977A /* ImageCommentsLoader.swift */; };
@@ -58,6 +59,7 @@
 		BF3F127626197158002BC356 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ImageComments.strings; sourceTree = "<group>"; };
 		BF3F127A261971A3002BC356 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/ImageComments.strings"; sourceTree = "<group>"; };
 		BF3F127D261971C0002BC356 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/ImageComments.strings; sourceTree = "<group>"; };
+		BF8807DA261BDAB90057C726 /* ImageCommentsFeedControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCommentsFeedControllerTests.swift; sourceTree = "<group>"; };
 		BF918F54261A53530094977A /* XCTestCase+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Extension.swift"; sourceTree = "<group>"; };
 		BF918F5A261A75810094977A /* ImageCommentsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCommentsTests.swift; sourceTree = "<group>"; };
 		BF918F5E261A76840094977A /* ImageCommentsLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCommentsLoader.swift; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 			isa = PBXGroup;
 			children = (
 				BF918F8A261A7D0E0094977A /* Info.plist */,
+				BF8807DA261BDAB90057C726 /* ImageCommentsFeedControllerTests.swift */,
 			);
 			path = EssentialCommentsFeediOSTests;
 			sourceTree = "<group>";
@@ -339,6 +342,7 @@
 					};
 					BF918F85261A7D0E0094977A = {
 						CreatedOnToolsVersion = 12.4;
+						LastSwiftMigration = 1240;
 					};
 					BFA30B422617B28200756660 = {
 						CreatedOnToolsVersion = 12.4;
@@ -416,6 +420,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF8807DB261BDAB90057C726 /* ImageCommentsFeedControllerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -531,6 +536,7 @@
 		BF918F8F261A7D0E0094977A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = EssentialCommentsFeediOSTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
@@ -542,6 +548,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = wb.devs.EssentialCommentsFeediOSTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -550,6 +557,7 @@
 		BF918F90261A7D0E0094977A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = EssentialCommentsFeediOSTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
