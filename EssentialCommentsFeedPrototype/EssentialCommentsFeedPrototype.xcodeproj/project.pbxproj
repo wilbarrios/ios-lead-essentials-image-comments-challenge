@@ -15,6 +15,7 @@
 		BF918FB2261A83B80094977A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF918FB0261A83B80094977A /* LaunchScreen.storyboard */; };
 		BF918FBB261A8B7C0094977A /* ImageCommentsFeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF918FBA261A8B7C0094977A /* ImageCommentsFeedController.swift */; };
 		BF918FBE261A91120094977A /* ImageCommentsFeedViewModel+PrototypeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF918FBD261A91120094977A /* ImageCommentsFeedViewModel+PrototypeData.swift */; };
+		BF918FC1261A92300094977A /* ImageCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF918FC0261A92300094977A /* ImageCommentCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		BF918FB3261A83B80094977A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BF918FBA261A8B7C0094977A /* ImageCommentsFeedController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCommentsFeedController.swift; sourceTree = "<group>"; };
 		BF918FBD261A91120094977A /* ImageCommentsFeedViewModel+PrototypeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageCommentsFeedViewModel+PrototypeData.swift"; sourceTree = "<group>"; };
+		BF918FC0261A92300094977A /* ImageCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCommentCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +71,7 @@
 				BF918FB3261A83B80094977A /* Info.plist */,
 				BF918FBA261A8B7C0094977A /* ImageCommentsFeedController.swift */,
 				BF918FBD261A91120094977A /* ImageCommentsFeedViewModel+PrototypeData.swift */,
+				BF918FC0261A92300094977A /* ImageCommentCell.swift */,
 			);
 			path = EssentialCommentsFeedPrototype;
 			sourceTree = "<group>";
@@ -148,6 +151,7 @@
 				BF918FBE261A91120094977A /* ImageCommentsFeedViewModel+PrototypeData.swift in Sources */,
 				BF918FA8261A83B40094977A /* SceneDelegate.swift in Sources */,
 				BF918FBB261A8B7C0094977A /* ImageCommentsFeedController.swift in Sources */,
+				BF918FC1261A92300094977A /* ImageCommentCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
