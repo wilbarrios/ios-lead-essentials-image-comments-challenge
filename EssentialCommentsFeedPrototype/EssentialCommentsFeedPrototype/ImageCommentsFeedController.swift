@@ -8,6 +8,12 @@
 import Foundation
 import UIKit
 
+struct ImageCommentsFeedViewModel {
+    let author: String
+    let createdAt: String
+    let comment: String
+}
+
 class ImageCommentsFeedController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 10
