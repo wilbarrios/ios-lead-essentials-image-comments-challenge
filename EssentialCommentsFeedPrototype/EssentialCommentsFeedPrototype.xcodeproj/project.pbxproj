@@ -13,6 +13,7 @@
 		BF918FAD261A83B40094977A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF918FAB261A83B40094977A /* Main.storyboard */; };
 		BF918FAF261A83B80094977A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF918FAE261A83B80094977A /* Assets.xcassets */; };
 		BF918FB2261A83B80094977A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF918FB0261A83B80094977A /* LaunchScreen.storyboard */; };
+		BF918FBB261A8B7C0094977A /* ImageCommentsFeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF918FBA261A8B7C0094977A /* ImageCommentsFeedController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		BF918FAE261A83B80094977A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BF918FB1261A83B80094977A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BF918FB3261A83B80094977A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BF918FBA261A8B7C0094977A /* ImageCommentsFeedController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCommentsFeedController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				BF918FAE261A83B80094977A /* Assets.xcassets */,
 				BF918FB0261A83B80094977A /* LaunchScreen.storyboard */,
 				BF918FB3261A83B80094977A /* Info.plist */,
+				BF918FBA261A8B7C0094977A /* ImageCommentsFeedController.swift */,
 			);
 			path = EssentialCommentsFeedPrototype;
 			sourceTree = "<group>";
@@ -140,6 +143,7 @@
 				BF918FAA261A83B40094977A /* ViewController.swift in Sources */,
 				BF918FA6261A83B40094977A /* AppDelegate.swift in Sources */,
 				BF918FA8261A83B40094977A /* SceneDelegate.swift in Sources */,
+				BF918FBB261A8B7C0094977A /* ImageCommentsFeedController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

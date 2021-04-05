@@ -10,33 +10,33 @@
         <!--Comments-->
         <scene sceneID="ilN-xt-OKG">
             <objects>
-                <tableViewController title="Comments" id="XAu-A1-KrE" sceneMemberID="viewController">
+                <tableViewController title="Comments" id="XAu-A1-KrE" customClass="ImageCommentsFeedController" customModule="EssentialCommentsFeedPrototype" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="U9E-I7-N6O">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ImageCommentCell" id="CSX-7G-bxz">
-                                <rect key="frame" x="0.0" y="28" width="414" height="337"/>
+                                <rect key="frame" x="0.0" y="28" width="414" height="317"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="CSX-7G-bxz" id="3Nh-AG-gpQ">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="337"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="317"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Coment Author" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="atP-jY-vjz">
-                                            <rect key="frame" x="30" y="21" width="260" height="21"/>
+                                            <rect key="frame" x="20" y="11" width="284" height="21"/>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                             <color key="textColor" red="0.25490196079999999" green="0.25490196079999999" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="N days ago" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zVx-eh-cPp">
-                                            <rect key="frame" x="300" y="21" width="84" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
+                                            <rect key="frame" x="314" y="11" width="80" height="19.5"/>
+                                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="16"/>
                                             <color key="textColor" red="0.25490196079999999" green="0.25490196079999999" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VEN-H1-pUy">
-                                            <rect key="frame" x="30" y="52" width="354" height="264"/>
+                                            <rect key="frame" x="20" y="42" width="374" height="264"/>
                                             <mutableString key="text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</mutableString>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.25490196079999999" green="0.25490196079999999" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -44,14 +44,14 @@
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="bottomMargin" secondItem="VEN-H1-pUy" secondAttribute="bottom" constant="10" id="0ID-nw-3G8"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="zVx-eh-cPp" secondAttribute="trailing" constant="10" id="2Hu-lI-7Qz"/>
-                                        <constraint firstItem="atP-jY-vjz" firstAttribute="leading" secondItem="3Nh-AG-gpQ" secondAttribute="leadingMargin" constant="10" id="9DS-Rl-lbT"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="VEN-H1-pUy" secondAttribute="trailing" constant="10" id="9Ql-Hs-cNB"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="VEN-H1-pUy" secondAttribute="bottom" id="0ID-nw-3G8"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="zVx-eh-cPp" secondAttribute="trailing" id="2Hu-lI-7Qz"/>
+                                        <constraint firstItem="atP-jY-vjz" firstAttribute="leading" secondItem="3Nh-AG-gpQ" secondAttribute="leadingMargin" id="9DS-Rl-lbT"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="VEN-H1-pUy" secondAttribute="trailing" id="9Ql-Hs-cNB"/>
                                         <constraint firstItem="zVx-eh-cPp" firstAttribute="leading" secondItem="atP-jY-vjz" secondAttribute="trailing" constant="10" id="9o0-Dr-0cd"/>
-                                        <constraint firstItem="atP-jY-vjz" firstAttribute="top" secondItem="3Nh-AG-gpQ" secondAttribute="topMargin" constant="10" id="Lrm-js-3en"/>
-                                        <constraint firstItem="VEN-H1-pUy" firstAttribute="leading" secondItem="3Nh-AG-gpQ" secondAttribute="leadingMargin" constant="10" id="XCt-Ai-IPH"/>
-                                        <constraint firstItem="zVx-eh-cPp" firstAttribute="top" secondItem="3Nh-AG-gpQ" secondAttribute="topMargin" constant="10" id="fNl-cF-48T"/>
+                                        <constraint firstItem="atP-jY-vjz" firstAttribute="top" secondItem="3Nh-AG-gpQ" secondAttribute="topMargin" id="Lrm-js-3en"/>
+                                        <constraint firstItem="VEN-H1-pUy" firstAttribute="leading" secondItem="3Nh-AG-gpQ" secondAttribute="leadingMargin" id="XCt-Ai-IPH"/>
+                                        <constraint firstItem="zVx-eh-cPp" firstAttribute="top" secondItem="3Nh-AG-gpQ" secondAttribute="topMargin" id="fNl-cF-48T"/>
                                         <constraint firstItem="VEN-H1-pUy" firstAttribute="top" secondItem="atP-jY-vjz" secondAttribute="bottom" constant="10" id="hgX-tv-n4c"/>
                                     </constraints>
                                 </tableViewCellContentView>
