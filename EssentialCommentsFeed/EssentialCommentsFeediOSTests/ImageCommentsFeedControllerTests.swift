@@ -28,21 +28,27 @@ final class ImageCommentsFeedController: UIViewController {
 class ImageCommentsFeedControllerTests: XCTestCase {
     
     func test_init_doesNotLoadComments() {
-        let loader = CommentsLoaderMock()
-        let _ = ImageCommentsFeedController(loader: loader)
+        let (_, loader) = makeSUT()
         
         XCTAssertEqual(loader.loadCallCounts, 0)
     }
     
     func test_loadAutomatically_onViewDidLoad() {
-        let loader = CommentsLoaderMock()
-        let sut = ImageCommentsFeedController(loader: loader)
+        let (sut, loader) = makeSUT()
         
         sut.loadViewIfNeeded()
         
         XCTAssertEqual(loader.loadCallCounts, 1)
     }
     
+    // MARK: Helpers
+    private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: ImageCommentsFeedController, loader: CommentsLoaderMock) {
+        let loader = CommentsLoaderMock()
+        let sut = ImageCommentsFeedController(loader: loader)
+        trackMemoryLeaks(loader, file: file, line: line)
+        trackMemoryLeaks(sut, file: file, line: line)
+        return (sut, loader)
+    }
     
     // MARK: Testing entities
     class CommentsLoaderMock: ImageCommentsLoader {
