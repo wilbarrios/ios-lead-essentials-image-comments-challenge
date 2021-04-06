@@ -24,7 +24,7 @@ final class ImageCommentsFeedController: UITableViewController {
         refreshControl = UIRefreshControl()
         
         refreshControl?.beginRefreshing()
-        self.loader?.load { _ in }
+        self.loader?.load { [weak self] _ in self?.refreshControl?.endRefreshing() }
     }
 }
 
@@ -44,12 +44,21 @@ class ImageCommentsFeedControllerTests: XCTestCase {
         XCTAssertEqual(loader.loadCallCounts, 1)
     }
     
-    func test_load_displayLoadingSpiner() {
+    func test_load_displayLoadingState() {
         let (sut, _) = makeSUT()
         
         sut.loadViewIfNeeded()
         
         XCTAssertTrue(sut.refreshControl!.isRefreshing)
+    }
+    
+    func test_loadCompletes_stopsLoadingState() {
+        let (sut, loader) = makeSUT()
+        
+        sut.loadViewIfNeeded()
+        loader.complete()
+        
+        XCTAssertFalse(sut.refreshControl!.isRefreshing)
     }
     
     // MARK: Helpers
@@ -64,10 +73,18 @@ class ImageCommentsFeedControllerTests: XCTestCase {
     // MARK: Testing entities
     class CommentsLoaderMock: ImageCommentsLoader {
         
-        private(set) var loadCallCounts: Int = 0
+        typealias Result = ImageCommentsLoader.Result
+        private var messages = [(Result) -> Void]()
+        var loadCallCounts: Int { messages.count }
         
-        func load(completion: @escaping (ImageCommentsLoader.Result) -> Void) -> LoaderTask {
-            loadCallCounts += 1
+        func complete(result: Result = .success([]), _ index: Int = 0) {
+            messages[index](result)
+        }
+        
+        // Extension
+        
+        func load(completion: @escaping (Result) -> Void) -> LoaderTask {
+            messages.append(completion)
             return TaskMock()
         }
         
