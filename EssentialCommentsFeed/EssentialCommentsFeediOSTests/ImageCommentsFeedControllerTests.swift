@@ -22,8 +22,14 @@ final class ImageCommentsFeedController: UITableViewController {
         super.viewDidLoad()
         
         refreshControl = UIRefreshControl()
-        
+        refreshControl?.addTarget(self, action: #selector(refresh), for: .valueChanged)
         refreshControl?.beginRefreshing()
+        
+        refresh()
+    }
+    
+    @objc
+    private func refresh() {
         self.loader?.load { [weak self] _ in self?.refreshControl?.endRefreshing() }
     }
 }
@@ -59,6 +65,17 @@ class ImageCommentsFeedControllerTests: XCTestCase {
         loader.complete()
         
         XCTAssertFalse(sut.refreshControl!.isRefreshing)
+    }
+    
+    func test_pullToRefresh_loadsComments() {
+        let (sut, loader) = makeSUT()
+        sut.loadViewIfNeeded()
+        
+        sut.refreshControl?.allTargets.forEach({ target in
+            sut.refreshControl?.actions(forTarget: target, forControlEvent: .valueChanged)?.forEach({ (target as NSObject).perform(Selector($0)) })
+        })
+        
+        XCTAssertEqual(loader.loadCallCounts, 2)
     }
     
     // MARK: Helpers
