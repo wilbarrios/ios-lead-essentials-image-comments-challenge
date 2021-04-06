@@ -55,7 +55,7 @@ class ImageCommentsFeedControllerTests: XCTestCase {
         
         sut.loadViewIfNeeded()
         
-        XCTAssertTrue(sut.refreshControl!.isRefreshing)
+        XCTAssertTrue(sut.loadIndicatorIsVisible())
     }
     
     func test_loadCompletes_stopsLoadingState() {
@@ -64,17 +64,17 @@ class ImageCommentsFeedControllerTests: XCTestCase {
         sut.loadViewIfNeeded()
         loader.complete()
         
-        XCTAssertFalse(sut.refreshControl!.isRefreshing)
+        XCTAssertFalse(sut.loadIndicatorIsVisible())
     }
     
     func test_pullToRefresh_loadsComments() {
         let (sut, loader) = makeSUT()
         sut.loadViewIfNeeded()
         
-        sut.refreshControl?.simulatePullToRefresh()
+        sut.simulateUserInitiatesCommentsReload()
         XCTAssertEqual(loader.loadCallCounts, 2)
         
-        sut.refreshControl?.simulatePullToRefresh()
+        sut.simulateUserInitiatesCommentsReload()
         XCTAssertEqual(loader.loadCallCounts, 3)
     }
     
@@ -111,7 +111,16 @@ class ImageCommentsFeedControllerTests: XCTestCase {
             }
         }
     }
+}
+
+extension ImageCommentsFeedController {
+    func loadIndicatorIsVisible() -> Bool {
+        refreshControl?.isRefreshing ?? false
+    }
     
+    func simulateUserInitiatesCommentsReload() {
+        refreshControl?.simulatePullToRefresh()
+    }
 }
 
 extension UIRefreshControl {
