@@ -12,6 +12,7 @@ import EssentialCommentsFeed
 
 final class ImageCommentsFeedController: UITableViewController {
     private var loader: ImageCommentsLoader?
+    private var loaderTask: LoaderTask?
     
     convenience init(loader: ImageCommentsLoader) {
         self.init()
@@ -28,9 +29,14 @@ final class ImageCommentsFeedController: UITableViewController {
         refresh()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        loaderTask?.cancel()
+    }
+    
     @objc
     private func refresh() {
-        self.loader?.load { [weak self] _ in self?.refreshControl?.endRefreshing() }
+        self.loaderTask = self.loader?.load { [weak self] _ in self?.refreshControl?.endRefreshing() }
     }
 }
 
@@ -78,6 +84,15 @@ class ImageCommentsFeedControllerTests: XCTestCase {
         XCTAssertEqual(loader.loadCallCounts, 3)
     }
     
+    func test_userNavigatesBack_cancelCommentsLoad() {
+        let (sut, loader) = makeSUT()
+        sut.loadViewIfNeeded()
+        
+        sut.simulateUserNavigatesBack()
+        
+        XCTAssertTrue(loader.loadWasCancelled)
+    }
+    
     // MARK: Helpers
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: ImageCommentsFeedController, loader: CommentsLoaderMock) {
         let loader = CommentsLoaderMock()
@@ -93,6 +108,7 @@ class ImageCommentsFeedControllerTests: XCTestCase {
         typealias Result = ImageCommentsLoader.Result
         private var messages = [(Result) -> Void]()
         var loadCallCounts: Int { messages.count }
+        var loadWasCancelled: Bool = false
         
         func complete(result: Result = .success([]), _ index: Int = 0) {
             messages[index](result)
@@ -102,12 +118,13 @@ class ImageCommentsFeedControllerTests: XCTestCase {
         
         func load(completion: @escaping (Result) -> Void) -> LoaderTask {
             messages.append(completion)
-            return TaskMock()
+            return TaskSpy { [weak self] in self?.loadWasCancelled = true }
         }
         
-        class TaskMock: LoaderTask {
+        struct TaskSpy: LoaderTask {
+            let cancelHandler: () -> Void
             func cancel() {
-                
+                cancelHandler()
             }
         }
     }
@@ -120,6 +137,10 @@ extension ImageCommentsFeedController {
     
     func simulateUserInitiatesCommentsReload() {
         refreshControl?.simulatePullToRefresh()
+    }
+    
+    func simulateUserNavigatesBack() {
+        self.viewWillDisappear(false)
     }
 }
 
