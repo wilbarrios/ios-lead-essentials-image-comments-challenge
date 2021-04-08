@@ -13,6 +13,7 @@ import EssentialCommentsFeed
 final class ImageCommentsFeedController: UITableViewController {
     private var loader: ImageCommentsLoader?
     private var loaderTask: LoaderTask?
+    private var tableModels = [FeedImageComment]() { didSet { tableView.reloadData() }}
     
     convenience init(loader: ImageCommentsLoader) {
         self.init()
@@ -36,11 +37,39 @@ final class ImageCommentsFeedController: UITableViewController {
     
     @objc
     private func refresh() {
-        self.loaderTask = self.loader?.load { [weak self] _ in self?.refreshControl?.endRefreshing() }
+        self.loaderTask = self.loader?.load { [weak self] result in
+            if let items = try? result.get() {
+                self?.tableModels = items
+            }
+            self?.refreshControl?.endRefreshing() }
+    }
+    
+    // MARK: Extensions
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return tableModels.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cellModel = tableModels[indexPath.row]
+        let cell = ImageCommentCell()
+        cell.authorLabel.text = cellModel.author.username
+        cell.commentLabel.text = cellModel.message
+        cell.createdAtLabel.text = cellModel.createdAt.description
+        return cell
     }
 }
 
-class ImageCommentsFeedControllerTests: XCTestCase {
+final class ImageCommentCell: UITableViewCell {
+    public let authorLabel = UILabel()
+    public let commentLabel = UILabel()
+    public let createdAtLabel = UILabel()
+}
+
+class ImageCommentsFeedControllerTests: XCTestCase, ImageCommentsTest {
     
     func test_init_doesNotLoadComments() {
         let (_, loader) = makeSUT()
@@ -93,6 +122,22 @@ class ImageCommentsFeedControllerTests: XCTestCase {
         XCTAssertTrue(loader.loadWasCancelled)
     }
     
+    func test_loadComments_rendersExpectedComments() {
+        let (sut, loader) = makeSUT()
+        sut.loadViewIfNeeded()
+        
+        let comment = makeComment(message: "Comment One", author: "Wilmer", createdAt: isoDateOne)
+        loader.complete(result: .success([comment.model]))
+        
+        XCTAssertEqual(sut.numberOfRenderedCommentsViews(), 1)
+        
+        let view = sut.getViewFor(index: 0) as? ImageCommentCell
+        
+        XCTAssertNotNil(view)
+        XCTAssertEqual(view!.authorValue, comment.model.author.username)
+        XCTAssertEqual(view!.commentValue, comment.model.message)
+    }
+    
     // MARK: Helpers
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: ImageCommentsFeedController, loader: CommentsLoaderMock) {
         let loader = CommentsLoaderMock()
@@ -142,6 +187,26 @@ extension ImageCommentsFeedController {
     func simulateUserNavigatesBack() {
         self.viewWillDisappear(false)
     }
+    
+    func getViewFor(index: Int) -> UITableViewCell? {
+        let ds = tableView.dataSource
+        let indexPath = IndexPath(row: index, section: commentsSection)
+        return ds?.tableView(tableView, cellForRowAt: indexPath)
+    }
+    
+    func numberOfRenderedCommentsViews() -> Int {
+        tableView.numberOfRows(inSection: commentsSection)
+    }
+    
+    private var commentsSection: Int {
+        0
+    }
+}
+
+private extension ImageCommentCell {
+    var authorValue: String? { authorLabel.text }
+    var commentValue: String? { commentLabel.text }
+    var createdAtValue: String? { createdAtLabel.text }
 }
 
 extension UIRefreshControl {

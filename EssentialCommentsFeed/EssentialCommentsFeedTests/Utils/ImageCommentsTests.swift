@@ -12,6 +12,10 @@ import EssentialCommentsFeed
 protocol ImageCommentsTest: XCTestCase { }
 
 extension ImageCommentsTest {
+    var isoDateOne: String { "2020-05-20T11:24:59+0000" }
+    
+    var isoDateTwo: String { "2020-05-19T14:23:53+0000" }
+    
     func makeAuthor(username: String) -> (json: [String: Any], model: FeedImageCommentAuthor) {
         let json = ["username": username]
         let data = FeedImageCommentAuthor(username: username)
