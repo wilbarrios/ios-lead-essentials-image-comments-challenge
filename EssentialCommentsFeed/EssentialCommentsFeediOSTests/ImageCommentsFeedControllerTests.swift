@@ -10,45 +10,62 @@ import XCTest
 import UIKit
 import EssentialCommentsFeed
 
+final class FeedRefreshViewController: NSObject {
+    private(set) lazy var view: UIRefreshControl = {
+        let view = UIRefreshControl()
+        view.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        return view
+    }()
+    
+    let loader: ImageCommentsLoader
+    
+    init(loader: ImageCommentsLoader) {
+        self.loader = loader
+    }
+    
+    var onRefresh: (([FeedImageComment]) -> Void)?
+    private var task: LoaderTask?
+    
+    @objc
+    func refresh() {
+        view.beginRefreshing()
+        task = self.loader.load { [weak self] result in
+            if let comments = try? result.get() {
+                self?.onRefresh?(comments)
+            }
+            self?.view.endRefreshing()
+        }
+    }
+    
+    func cancel() {
+        task?.cancel()
+    }
+}
+
 final class ImageCommentsFeedController: UITableViewController {
-    private var loader: ImageCommentsLoader?
-    private var loaderTask: LoaderTask?
+    
     private var tableModels = [FeedImageComment]() { didSet { tableView.reloadData() }}
+    private var refreshController: FeedRefreshViewController?
     
     convenience init(loader: ImageCommentsLoader) {
         self.init()
-        self.loader = loader
+        refreshController = FeedRefreshViewController(loader: loader)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        refreshControl = UIRefreshControl()
-        refreshControl?.addTarget(self, action: #selector(refresh), for: .valueChanged)
-        refreshControl?.beginRefreshing()
-        
-        refresh()
+        refreshControl = refreshController?.view
+        refreshController?.onRefresh = {[weak self] comments in self?.tableModels = comments }
+        refreshController?.refresh()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        loaderTask?.cancel()
-    }
-    
-    @objc
-    private func refresh() {
-        self.loaderTask = self.loader?.load { [weak self] result in
-            if let items = try? result.get() {
-                self?.tableModels = items
-            }
-            self?.refreshControl?.endRefreshing() }
+        refreshController?.cancel()
     }
     
     // MARK: Extensions
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tableModels.count
     }
@@ -180,8 +197,8 @@ extension ImageCommentsFeedController {
         refreshControl?.isRefreshing ?? false
     }
     
-    func simulateUserInitiatesCommentsReload() {
-        refreshControl?.simulatePullToRefresh()
+    func simulateUserInitiatesCommentsReload(file: StaticString = #file, line: UInt = #line) {
+        refreshControl?.simulatePullToRefresh(file: file, line: line)
     }
     
     func simulateUserNavigatesBack() {
@@ -210,7 +227,7 @@ private extension ImageCommentCell {
 }
 
 extension UIRefreshControl {
-    func simulatePullToRefresh() {
+    func simulatePullToRefresh(file: StaticString = #file, line: UInt = #line) {
         allTargets.forEach({ target in
             actions(forTarget: target, forControlEvent: .valueChanged)?.forEach({ (target as NSObject).perform(Selector($0)) })
         })
