@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:../EssentialCommentsFeed/EssentialCommentsFeed.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:../EssentialFeed/EssentialFeed.xcodeproj">
    </FileRef>
    <FileRef
