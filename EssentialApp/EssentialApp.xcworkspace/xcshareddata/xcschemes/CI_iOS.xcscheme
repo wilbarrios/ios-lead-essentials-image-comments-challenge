@@ -96,6 +96,28 @@
                ReferencedContainer = "container:EssentialApp.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            testExecutionOrdering = "random">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BFA30B552617B3C200756660"
+               BuildableName = "EssentialCommentsFeedTests.xctest"
+               BlueprintName = "EssentialCommentsFeedTests"
+               ReferencedContainer = "container:../EssentialCommentsFeed/EssentialCommentsFeed.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            testExecutionOrdering = "random">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BF918F85261A7D0E0094977A"
+               BuildableName = "EssentialCommentsFeediOSTests.xctest"
+               BlueprintName = "EssentialCommentsFeediOSTests"
+               ReferencedContainer = "container:../EssentialCommentsFeed/EssentialCommentsFeed.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
